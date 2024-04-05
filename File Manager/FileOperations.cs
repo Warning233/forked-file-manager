@@ -15,7 +15,7 @@ namespace File_Manager
         {
 
         }*/
-        public void Delete(string path, ListBox listBox)
+        public void Delete(string path, ListBox listBox)        // looks weird... 
         {
 
             if (path != "...")
@@ -31,7 +31,7 @@ namespace File_Manager
             }
         }
 
-        public bool CopyFolder(string fromPath, string toPath) 
+        public bool CopyFolder(string fromPath, string toPath)  // even weirder...
         {
             if(fromPath == "..." || toPath == "...")
             {

@@ -108,7 +108,7 @@ namespace File_Manager
                 
 
                 DialogResult result = MessageBox.Show(
-                    $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?",
+                    $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?",     // Maybe, here I need to define this condition in other method.
                     "Сообщение",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information,
