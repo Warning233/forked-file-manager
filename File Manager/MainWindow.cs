@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -94,8 +95,36 @@ namespace File_Manager
                 if (result == DialogResult.Yes)
                 {
                     fileOperations.Delete(Path.Combine(currentFolder, selectedObject), currentBox);
+                    currentBox.Update();
+                    selectedObject = "";
                 }
                 TopMost = true;
+            }
+
+            if(e.KeyCode == Keys.F5 && currentBox.SelectedItems.Count == 1)
+            {
+                string fromPath = Path.Combine(currentFolder, selectedObject);
+                string toPath = currentFolder == paths[1] ? paths[0] + selectedObject : paths[1] + selectedObject;
+                
+
+                DialogResult result = MessageBox.Show(
+                    $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?",
+                    "Сообщение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (fileOperations.CopyFolder(fromPath, toPath))
+                    {
+                        MessageBox.Show("Успех!");
+                        TopMost = true;
+                    }
+                    TopMost = true;
+             
+                }
             }
 
         }

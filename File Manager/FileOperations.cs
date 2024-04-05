@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,25 +10,62 @@ using System.Windows.Forms;
 namespace File_Manager
 {
     internal class FileOperations 
-    { 
+    {
         /*public void CreateFolder() 
         {
 
         }*/
-        public void Delete(string path, ListBox listBox) 
+        public void Delete(string path, ListBox listBox)
         {
-            if (path != "..." && Directory.Exists(path))
+
+            if (path != "...")
             {
-                Directory.Delete(path, true);
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+
+                else
+                    File.Delete(path);
+
                 listBox.Items.Remove(listBox.SelectedItems[0].ToString());
+
             }
-            else if (path != "...")
+        }
+
+        public bool CopyFolder(string fromPath, string toPath) 
+        {
+            if(fromPath == "..." || toPath == "...")
             {
-                File.Delete(path);
-                Console.Write(listBox.Items);
+                return false;
             }
-        }   
-        public void CopyFile() { }
+
+
+            if (!Directory.Exists(toPath))
+            {
+                Directory.CreateDirectory(toPath);
+            }
+
+            string[] files = Directory.GetFiles(fromPath);
+            foreach(string file in files)
+            {
+                string name = Path.GetFileName(file);
+                string destination = Path.Combine(toPath, name);
+                File.Copy(file, destination);
+            }
+
+            string[] folders = Directory.GetDirectories(fromPath);
+            foreach (string folder in folders)
+            {
+                string name = Path.GetFileName(folder);
+                string destination = Path.Combine(toPath, name);
+                CopyFolder(folder, destination);
+            }
+            return true;
+        }
+
+        //public bool CopyFile(string fromPath, string toPath, ListBox listBox)
+        //{
+
+//        }
         public void EditFile() { }
         public void ViewFile() { }
         public void MoveFile() { }
