@@ -71,7 +71,7 @@
             this.catalogButton.Name = "catalogButton";
             this.catalogButton.Size = new System.Drawing.Size(200, 29);
             this.catalogButton.TabIndex = 17;
-            this.catalogButton.Text = "F7 Catalog";
+            this.catalogButton.Text = "F7 Move";
             this.catalogButton.UseVisualStyleBackColor = true;
             // 
             // deleteButton

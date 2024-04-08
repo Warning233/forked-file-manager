@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ScrollBar;
+using System.Windows;
 
 namespace File_Manager
 {
@@ -41,90 +42,100 @@ namespace File_Manager
             string currentFolder = currentBox == lFiles ? paths[0] : paths[1];
             string selectedObject = currentBox.SelectedItems[0].ToString();
 
-            if (e.KeyCode == Keys.Enter && currentBox.SelectedItems.Count == 1)
-            { 
+            if (currentBox.SelectedItems.Count == 1)
+            {
 
-                if (selectedObject == "...")
+                if (e.KeyCode == Keys.Enter)
                 {
-                    DirectoryInfo parentDir = Directory.GetParent(currentFolder);
-                    if (currentFolder == paths[0])
+                    DirectoryInfo parentDirectory = Directory.GetParent(currentFolder);
+                    string newPath;
+
+                    if (selectedObject.Equals("..."))
                     {
-                        paths[0] = parentDir.FullName;
+                        if (currentFolder == paths[0])
+                        {
+                            parentDirectory = Directory.GetParent(paths[0]);
+                            newPath = parentDirectory != null ? parentDirectory.FullName : paths[0];
+                        }
+                        else
+                        {
+                            parentDirectory = Directory.GetParent(paths[1]);
+                            newPath = parentDirectory != null ? parentDirectory.FullName : paths[1];
+                        }
+                    }
+
+                    else
+                    {
+                        newPath = (currentFolder == paths[0]) ? Path.Combine(paths[0], selectedObject) : Path.Combine(paths[1], selectedObject);
+                    }
+
+                    if (currentBox == lFiles)
+                    {
+                        paths[0] = newPath;
                         leftTBox.Text = paths[0];
-                        currentFolder = paths[0];                   //  A simpler solution is needed here. This solution is hard to read...
                     }
                     else
                     {
-                        paths[1] = parentDir.FullName;
+                        paths[1] = newPath;
                         rightTBox.Text = paths[1];
-                        currentFolder = paths[1];
                     }
 
+                    currentFolder = newPath;
+                    fileOperations.NavigateToDirectory(currentFolder, currentBox);
                 }
-                else
+
+                if (e.KeyCode == Keys.F8)
                 {
-                    if (currentFolder == paths[0])
-                    { 
-                        paths[0] = Path.Combine(paths[0], selectedObject);
-                        leftTBox.Text = paths[0];
-                        currentFolder = paths[0];                               // The same problem.
-                    }
-                    else
+                    string query = $"Вы действительно хотите удалить этот объект '{selectedObject}' ?";
+
+                    if (MessageBox.Show(query, "Удалить?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        paths[1] = Path.Combine(paths[1], selectedObject);
-                        rightTBox.Text = paths[1];
-                        currentFolder = paths[1];
-                    }
-                }
-
-
-                fileOperations.NavigateToDirectory(currentFolder, currentBox);
-            }
-
-
-            if(e.KeyCode == Keys.F8 && currentBox.SelectedItems.Count == 1)
-            {
-                DialogResult result = MessageBox.Show(
-                    "Вы действительно хотите удалить этот объект?",
-                    "Сообщение",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-                if (result == DialogResult.Yes)
-                {
-                    fileOperations.Delete(Path.Combine(currentFolder, selectedObject), currentBox);
-                    currentBox.Update();
-                    selectedObject = "";
-                }
-                TopMost = true;
-            }
-
-            if(e.KeyCode == Keys.F5 && currentBox.SelectedItems.Count == 1)
-            {
-                string fromPath = Path.Combine(currentFolder, selectedObject);
-                string toPath = currentFolder == paths[1] ? paths[0] + selectedObject : paths[1] + selectedObject;
-                
-
-                DialogResult result = MessageBox.Show(
-                    $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?",     // Maybe, here I need to define this condition in other method.
-                    "Сообщение",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-
-                if (result == DialogResult.Yes)
-                {
-                    if (fileOperations.CopyFolder(fromPath, toPath))
-                    {
-                        MessageBox.Show("Успех!");
-                        TopMost = true;
+                        fileOperations.Delete(Path.Combine(currentFolder, selectedObject), currentBox);
+                        currentBox.Update();
+                        selectedObject = "";
                     }
                     TopMost = true;
-             
                 }
+
+                if (e.KeyCode == Keys.F7)
+                {
+                    string source = Path.Combine(currentFolder, selectedObject);
+                    string destination = currentFolder == paths[1] ? paths[0] : paths[1];
+
+                    string query = $"Переместить {Path.GetFileName(source)} в {destination} ?";
+
+                    if (MessageBox.Show(query, "Переместить?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        fileOperations.Move(source, destination, currentBox);
+                    }
+                }
+
+                if(e.KeyCode == Keys.F6)
+                {
+
+                }
+
+                if (e.KeyCode == Keys.F5)
+                {
+                    string fromPath = Path.Combine(currentFolder, selectedObject);
+                    string toPath = currentFolder == paths[1] ? paths[0] + selectedObject : paths[1] + selectedObject;
+
+                    string query = $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?";
+
+                    if (MessageBox.Show(query, "Копировать?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        if (fileOperations.CopyFolder(fromPath, toPath, currentBox))
+                        {
+                            MessageBox.Show("Успех!");
+                            TopMost = true;
+                        }
+                        TopMost = true;
+                    }
+                }
+                
             }
 
         }

@@ -11,64 +11,90 @@ namespace File_Manager
 {
     internal class FileOperations 
     {
-        /*public void CreateFolder() 
+        public void Delete(string source, ListBox listBox)        // looks weird... 
         {
 
-        }*/
-        public void Delete(string path, ListBox listBox)        // looks weird... 
-        {
-
-            if (path != "...")
+            if (source != "...")
             {
-                if (Directory.Exists(path))
-                    Directory.Delete(path, true);
+                if (Directory.Exists(source))
+                    Directory.Delete(source, true);
 
                 else
-                    File.Delete(path);
+                    File.Delete(source);
 
                 listBox.Items.Remove(listBox.SelectedItems[0].ToString());
 
             }
         }
 
-        public bool CopyFolder(string fromPath, string toPath)  // even weirder...
+        public bool CopyFolder(string source, string destination, ListBox listBox)  // even weirder...
         {
-            if(fromPath == "..." || toPath == "...")
+            if(source == "..." || destination == "...")
             {
                 return false;
             }
 
 
-            if (!Directory.Exists(toPath))
+            if (!Directory.Exists(destination))
             {
-                Directory.CreateDirectory(toPath);
+                Directory.CreateDirectory(destination);
             }
 
-            string[] files = Directory.GetFiles(fromPath);
+            string[] files = Directory.GetFiles(source);
             foreach(string file in files)
             {
                 string name = Path.GetFileName(file);
-                string destination = Path.Combine(toPath, name);
-                File.Copy(file, destination);
+                string dest = Path.Combine(destination, name);
+                File.Copy(file, dest);
             }
 
-            string[] folders = Directory.GetDirectories(fromPath);
+            string[] folders = Directory.GetDirectories(source);
             foreach (string folder in folders)
             {
                 string name = Path.GetFileName(folder);
-                string destination = Path.Combine(toPath, name);
-                CopyFolder(folder, destination);
+                string dest = Path.Combine(destination, name);
+                CopyFolder(folder, dest, listBox);
             }
             return true;
         }
 
-        //public bool CopyFile(string fromPath, string toPath, ListBox listBox)
-        //{
+        //public void EditFile() { }
+        //public void ViewFile() { }
 
-//        }
-        public void EditFile() { }
-        public void ViewFile() { }
-        public void MoveFile() { }
+        public void Move(string source, string destination, ListBox listBox)
+        {
+            if (File.Exists(source))
+            {
+                try
+                {
+                    File.Move(source, destination);
+                }
+
+                catch (Exception ex) 
+                {
+                    MessageBox.Show("Ошибка: " + ex.Message);
+                }
+
+            }
+
+            
+            else if (Directory.Exists(source))
+            {
+                try
+                {
+                    if (Directory.Exists(destination))
+                    {
+                        string newDestination = Path.Combine(destination, Path.GetFileName(source));
+                        Directory.Move(source, newDestination);
+                    }
+                }
+
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Ошибка: " + ex.Message);
+                }
+            }
+        }
         public void NavigateToDirectory(string path, ListBox listBox)
         {
             listBox.Items.Clear();
