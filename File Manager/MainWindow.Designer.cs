@@ -40,6 +40,7 @@
             this.rPanel = new System.Windows.Forms.Panel();
             this.rightTBox = new System.Windows.Forms.TextBox();
             this.leftTBox = new System.Windows.Forms.TextBox();
+            this.archiveButton = new System.Windows.Forms.Button();
             this.lPanel.SuspendLayout();
             this.rPanel.SuspendLayout();
             this.SuspendLayout();
@@ -97,7 +98,7 @@
             // rDriversBox
             // 
             this.rDriversBox.FormattingEnabled = true;
-            this.rDriversBox.Location = new System.Drawing.Point(712, 12);
+            this.rDriversBox.Location = new System.Drawing.Point(914, 12);
             this.rDriversBox.Name = "rDriversBox";
             this.rDriversBox.Size = new System.Drawing.Size(121, 24);
             this.rDriversBox.TabIndex = 20;
@@ -127,23 +128,23 @@
             this.lPanel.Controls.Add(this.lFiles);
             this.lPanel.Location = new System.Drawing.Point(12, 77);
             this.lPanel.Name = "lPanel";
-            this.lPanel.Size = new System.Drawing.Size(400, 555);
+            this.lPanel.Size = new System.Drawing.Size(402, 555);
             this.lPanel.TabIndex = 23;
             // 
             // rPanel
             // 
             this.rPanel.Controls.Add(this.rFiles);
-            this.rPanel.Location = new System.Drawing.Point(433, 77);
+            this.rPanel.Location = new System.Drawing.Point(633, 77);
             this.rPanel.Name = "rPanel";
-            this.rPanel.Size = new System.Drawing.Size(400, 555);
+            this.rPanel.Size = new System.Drawing.Size(402, 555);
             this.rPanel.TabIndex = 24;
             // 
             // rightTBox
             // 
-            this.rightTBox.Location = new System.Drawing.Point(433, 49);
+            this.rightTBox.Location = new System.Drawing.Point(633, 52);
             this.rightTBox.Name = "rightTBox";
             this.rightTBox.ReadOnly = true;
-            this.rightTBox.Size = new System.Drawing.Size(399, 22);
+            this.rightTBox.Size = new System.Drawing.Size(402, 22);
             this.rightTBox.TabIndex = 25;
             // 
             // leftTBox
@@ -154,11 +155,22 @@
             this.leftTBox.Size = new System.Drawing.Size(399, 22);
             this.leftTBox.TabIndex = 26;
             // 
+            // archiveButton
+            // 
+            this.archiveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.archiveButton.Location = new System.Drawing.Point(835, 638);
+            this.archiveButton.Name = "archiveButton";
+            this.archiveButton.Size = new System.Drawing.Size(200, 29);
+            this.archiveButton.TabIndex = 27;
+            this.archiveButton.Text = "F9 Archive";
+            this.archiveButton.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 669);
+            this.ClientSize = new System.Drawing.Size(1047, 669);
+            this.Controls.Add(this.archiveButton);
             this.Controls.Add(this.leftTBox);
             this.Controls.Add(this.rightTBox);
             this.Controls.Add(this.rPanel);
@@ -192,6 +204,7 @@
         private System.Windows.Forms.Panel rPanel;
         private System.Windows.Forms.TextBox rightTBox;
         private System.Windows.Forms.TextBox leftTBox;
+        private System.Windows.Forms.Button archiveButton;
     }
 }
 

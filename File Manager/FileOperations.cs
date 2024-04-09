@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace File_Manager
 {
@@ -14,7 +10,7 @@ namespace File_Manager
         public void Delete(string source, ListBox listBox)        // looks weird... 
         {
 
-            if (source != "...")
+            if (!source.Equals("..."))
             {
                 if (Directory.Exists(source))
                     Directory.Delete(source, true);
@@ -27,41 +23,80 @@ namespace File_Manager
             }
         }
 
-        public bool CopyFolder(string source, string destination, ListBox listBox)  // even weirder...
+        public void CopyDirectory(string source, string destination, bool recursive)  // even weirder...
+        { 
+            if(Path.GetFileName(source).Equals("..."))
+            {
+                return;
+            }
+
+            var dir = new DirectoryInfo(source);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException($"Папка не была найдена: {dir.FullName}");
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            Directory.CreateDirectory(destination);
+
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(destination, file.Name);
+                file.CopyTo(targetFilePath);
+            }
+
+            if (recursive)
+            {
+                foreach (DirectoryInfo subDir in dirs)
+                {
+                    string newDestination = Path.Combine(destination, subDir.Name);
+                    CopyDirectory(subDir.FullName, newDestination, true);
+                }
+            }
+        }
+        public void CopyFile(string source, string destination)
         {
-            if(source == "..." || destination == "...")
+            if (!Path.GetFileName(destination).Equals("..."))
             {
-                return false;
+                File.Copy(source, destination);
             }
-
-
-            if (!Directory.Exists(destination))
-            {
-                Directory.CreateDirectory(destination);
-            }
-
-            string[] files = Directory.GetFiles(source);
-            foreach(string file in files)
-            {
-                string name = Path.GetFileName(file);
-                string dest = Path.Combine(destination, name);
-                File.Copy(file, dest);
-            }
-
-            string[] folders = Directory.GetDirectories(source);
-            foreach (string folder in folders)
-            {
-                string name = Path.GetFileName(folder);
-                string dest = Path.Combine(destination, name);
-                CopyFolder(folder, dest, listBox);
-            }
-            return true;
         }
 
-        //public void EditFile() { }
-        //public void ViewFile() { }
+        public void ViewFile(string source)
+        {
+            Process.Start(source);
+        }
+        
+        public void Rename(string oldName, string newName)
+        {
+            if (Path.GetFileName(oldName).Equals("..."))
+            {
+                throw new Exception("Выбран неверный объект!");
+            }
+            
+            Microsoft.VisualBasic.FileSystem.Rename(oldName, newName);
+        }
 
-        public void Move(string source, string destination, ListBox listBox)
+        public void ArchiveFile(string source)
+        {
+            if (Path.GetFileName(source).Equals("..."))
+            {
+                throw new Exception("Выбран неверный объект!");
+            }
+
+            if (File.Exists(source))
+            {
+                
+            }
+
+            else
+            {
+
+            }
+        }
+
+        public void Move(string source, string destination)
         {
             if (File.Exists(source))
             {
@@ -95,15 +130,14 @@ namespace File_Manager
                 }
             }
         }
-        public void NavigateToDirectory(string path, ListBox listBox)
+        public void NavigateToDirectory(string source, ListBox listBox)
         {
-            listBox.Items.Clear();
-
-            listBox.Items.Add("...");
-
             try
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                listBox.Items.Clear();
+                listBox.Items.Add("...");
+                DirectoryInfo directoryInfo = new DirectoryInfo(source);
+
                 foreach (var directory in directoryInfo.EnumerateDirectories("*", SearchOption.TopDirectoryOnly))
                 {
                     listBox.Items.Add(directory.Name);
@@ -116,6 +150,5 @@ namespace File_Manager
             }
             catch (Exception ex) {}
         }
-
     }
 }

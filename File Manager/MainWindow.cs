@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ScrollBar;
 using System.Windows;
 
@@ -50,6 +41,12 @@ namespace File_Manager
                     DirectoryInfo parentDirectory = Directory.GetParent(currentFolder);
                     string newPath;
 
+                    if (File.Exists(Path.Combine(currentFolder, selectedObject)))
+                    {
+                        fileOperations.ViewFile(Path.Combine(currentFolder, selectedObject));
+                        return;
+                    }
+
                     if (selectedObject.Equals("..."))
                     {
                         if (currentFolder == paths[0])
@@ -84,6 +81,11 @@ namespace File_Manager
                     fileOperations.NavigateToDirectory(currentFolder, currentBox);
                 }
 
+                if(e.KeyCode == Keys.F9)
+                {
+
+                }
+
                 if (e.KeyCode == Keys.F8)
                 {
                     string query = $"Вы действительно хотите удалить этот объект '{selectedObject}' ?";
@@ -108,34 +110,48 @@ namespace File_Manager
                     if (MessageBox.Show(query, "Переместить?",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        fileOperations.Move(source, destination, currentBox);
+                        fileOperations.Move(source, destination);
+                        fileOperations.NavigateToDirectory(destination, Directory.GetDirectoryRoot(source).Equals(paths[0]) ? rFiles : lFiles);
                     }
                 }
 
-                if(e.KeyCode == Keys.F6)
+                if (e.KeyCode == Keys.F6)
                 {
+                    string result = Microsoft.VisualBasic.Interaction.InputBox("Введите новое имя:");
+                    string oldName = Path.Combine(currentFolder, selectedObject);
+                    string newName = Path.Combine(currentFolder, result);
 
+                    fileOperations.Rename(oldName, newName);
+                    fileOperations.NavigateToDirectory(currentFolder, currentBox);
                 }
 
                 if (e.KeyCode == Keys.F5)
                 {
-                    string fromPath = Path.Combine(currentFolder, selectedObject);
-                    string toPath = currentFolder == paths[1] ? paths[0] + selectedObject : paths[1] + selectedObject;
+                    string source = Path.Combine(currentFolder, selectedObject);
+                    string destination = currentFolder == paths[1] ? paths[0] + "\\" + selectedObject : paths[1] + '\\' + selectedObject;
+                    string query = $"Копировать {Path.GetFileName(source)} в {Path.GetDirectoryName(destination)} ?";
+                    var messageBox = (MessageBox.Show(query, "Копировать?",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question));
 
-                    string query = $"Копировать {Path.GetFileName(fromPath)} в {Path.GetDirectoryName(toPath)} ?";
-
-                    if (MessageBox.Show(query, "Копировать?",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (Directory.Exists(source))
                     {
-                        if (fileOperations.CopyFolder(fromPath, toPath, currentBox))
+                        if (messageBox == DialogResult.Yes)
                         {
-                            MessageBox.Show("Успех!");
-                            TopMost = true;
+                            fileOperations.CopyDirectory(source, destination, true);
+                            fileOperations.NavigateToDirectory(Directory.GetParent(destination).FullName, Directory.GetDirectoryRoot(source).Equals(paths[0]) ? rFiles : lFiles); // ...
                         }
-                        TopMost = true;
+                    }
+
+                    else
+                    {
+                        if (messageBox == DialogResult.Yes)
+                        { 
+                            fileOperations.CopyFile(source, destination);
+                            fileOperations.NavigateToDirectory(Directory.GetParent(destination).FullName, Directory.GetDirectoryRoot(source).Equals(paths[0]) ? rFiles : lFiles); // ...
+                        }
                     }
                 }
-                
+
             }
 
         }
