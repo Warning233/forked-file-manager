@@ -1,13 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.IO.Compression;
 using System.Diagnostics;
 
 namespace File_Manager
 {
     internal class FileOperations 
     {
-        public void Delete(string source, ListBox listBox)        // looks weird... 
+
+        // TODO:
+        // 1. переписать CopyDirectory с использованием CopyFile
+        public void Delete(string source)    
         {
 
             if (!source.Equals("..."))
@@ -17,16 +21,18 @@ namespace File_Manager
 
                 else
                     File.Delete(source);
-
-                listBox.Items.Remove(listBox.SelectedItems[0].ToString());
-
             }
         }
-
-        public void CopyDirectory(string source, string destination, bool recursive)  // even weirder...
+        public void CopyDirectory(string source, string destination, bool recursive) 
         { 
             if(Path.GetFileName(source).Equals("..."))
             {
+                return;
+            }
+
+            if (destination[0] == '\\')
+            {
+                MessageBox.Show("Неверный путь!");
                 return;
             }
 
@@ -59,55 +65,99 @@ namespace File_Manager
         {
             if (!Path.GetFileName(destination).Equals("..."))
             {
-                File.Copy(source, destination);
+                try
+                {
+                    File.Copy(source, destination);
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}");
+                }
             }
         }
+        public void Copy(string source, string destination) // Distributor method
+        {
+            if (Directory.Exists(source))
+                CopyDirectory(source, destination, true);
 
+            else
+                CopyFile(source, destination);
+        } 
         public void ViewFile(string source)
         {
             Process.Start(source);
         }
-        
         public void Rename(string oldName, string newName)
         {
-            if (Path.GetFileName(oldName).Equals("..."))
+            try
             {
-                throw new Exception("Выбран неверный объект!");
+                Microsoft.VisualBasic.FileSystem.Rename(oldName, newName);
             }
-            
-            Microsoft.VisualBasic.FileSystem.Rename(oldName, newName);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
         }
-
         public void ArchiveFile(string source)
         {
-            if (Path.GetFileName(source).Equals("..."))
-            {
-                throw new Exception("Выбран неверный объект!");
-            }
+            string sourceFile = source;
+            string destinationFile = Path.Combine(Path.GetDirectoryName(source), Path.GetFileName(source) + ".gz");
 
-            if (File.Exists(source))
+            if (File.Exists(source) && !Path.GetFileName(source).Equals("..."))
             {
-                
+
+                if (!File.Exists(destinationFile))
+                {
+                    using (File.Create(destinationFile)) { }
+                }
+
+                const int BufferSize = 16384;
+
+                byte[] buffer = new byte[BufferSize];
+
+                using (Stream inFileStream = File.Open(sourceFile, FileMode.Open,
+                    FileAccess.Read, FileShare.Read))
+                {
+                    using (Stream outFileStream = File.Open(destinationFile, FileMode.Create,
+                        FileAccess.Write, FileShare.None))
+                    {
+                        using (GZipStream gzipStream = new GZipStream(
+                            outFileStream, CompressionMode.Compress))
+                        {
+                            Stream inStream = inFileStream;
+                            Stream outStream = gzipStream;
+                            int bytesRead = 0;
+                            do
+                            {
+                                bytesRead = inStream.Read(buffer, 0, BufferSize);
+                                outStream.Write(buffer, 0, bytesRead);
+                            } while (bytesRead > 0);
+                        }
+                    }
+                }
             }
 
             else
             {
-
+                MessageBox.Show("Выберите файл!");
             }
-        }
 
+
+        }
         public void Move(string source, string destination)
         {
             if (File.Exists(source))
             {
                 try
                 {
-                    File.Move(source, destination);
+                    string newDestination = Path.Combine(destination, Path.GetFileName(source));
+                    File.Move(source, newDestination);
                 }
 
                 catch (Exception ex) 
                 {
-                    MessageBox.Show("Ошибка: " + ex.Message);
+                    MessageBox.Show($"Ошибка: {ex.Message}");
                 }
 
             }
@@ -126,7 +176,7 @@ namespace File_Manager
 
                 catch(Exception ex)
                 {
-                    MessageBox.Show("Ошибка: " + ex.Message);
+                    MessageBox.Show($"Ошибка: {ex.Message}");
                 }
             }
         }
@@ -148,7 +198,22 @@ namespace File_Manager
                     listBox.Items.Add(file.Name);
                 }
             }
-            catch (Exception ex) {}
+            catch (Exception ex) 
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public void RefreshList(MainWindow main, string leftPath, string rightPath)
+        {
+            if (main.leftLB.Items.Count != 0)
+            {
+                NavigateToDirectory(leftPath, main.leftLB);
+            }
+
+            else if (main.rightLB.Items.Count != 0)
+            {
+                NavigateToDirectory(rightPath, main.rightLB);
+            }
         }
     }
 }

@@ -128,23 +128,23 @@
             this.lPanel.Controls.Add(this.lFiles);
             this.lPanel.Location = new System.Drawing.Point(12, 77);
             this.lPanel.Name = "lPanel";
-            this.lPanel.Size = new System.Drawing.Size(402, 555);
+            this.lPanel.Size = new System.Drawing.Size(506, 555);
             this.lPanel.TabIndex = 23;
             // 
             // rPanel
             // 
             this.rPanel.Controls.Add(this.rFiles);
-            this.rPanel.Location = new System.Drawing.Point(633, 77);
+            this.rPanel.Location = new System.Drawing.Point(529, 77);
             this.rPanel.Name = "rPanel";
-            this.rPanel.Size = new System.Drawing.Size(402, 555);
+            this.rPanel.Size = new System.Drawing.Size(506, 555);
             this.rPanel.TabIndex = 24;
             // 
             // rightTBox
             // 
-            this.rightTBox.Location = new System.Drawing.Point(633, 52);
+            this.rightTBox.Location = new System.Drawing.Point(529, 52);
             this.rightTBox.Name = "rightTBox";
             this.rightTBox.ReadOnly = true;
-            this.rightTBox.Size = new System.Drawing.Size(402, 22);
+            this.rightTBox.Size = new System.Drawing.Size(506, 22);
             this.rightTBox.TabIndex = 25;
             // 
             // leftTBox
@@ -152,7 +152,7 @@
             this.leftTBox.Location = new System.Drawing.Point(12, 49);
             this.leftTBox.Name = "leftTBox";
             this.leftTBox.ReadOnly = true;
-            this.leftTBox.Size = new System.Drawing.Size(399, 22);
+            this.leftTBox.Size = new System.Drawing.Size(506, 22);
             this.leftTBox.TabIndex = 26;
             // 
             // archiveButton
