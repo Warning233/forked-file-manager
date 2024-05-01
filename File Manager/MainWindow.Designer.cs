@@ -41,6 +41,7 @@
             this.rightTBox = new System.Windows.Forms.TextBox();
             this.leftTBox = new System.Windows.Forms.TextBox();
             this.archiveButton = new System.Windows.Forms.Button();
+            this.settingsButton = new System.Windows.Forms.Button();
             this.lPanel.SuspendLayout();
             this.rPanel.SuspendLayout();
             this.SuspendLayout();
@@ -165,11 +166,22 @@
             this.archiveButton.Text = "F9 Archive";
             this.archiveButton.UseVisualStyleBackColor = true;
             // 
+            // settingsButton
+            // 
+            this.settingsButton.Location = new System.Drawing.Point(532, 23);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(25, 25);
+            this.settingsButton.TabIndex = 28;
+            this.settingsButton.Text = "⚙️";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1047, 669);
+            this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.archiveButton);
             this.Controls.Add(this.leftTBox);
             this.Controls.Add(this.rightTBox);
@@ -205,6 +217,7 @@
         private System.Windows.Forms.TextBox rightTBox;
         private System.Windows.Forms.TextBox leftTBox;
         private System.Windows.Forms.Button archiveButton;
+        private System.Windows.Forms.Button settingsButton;
     }
 }
 

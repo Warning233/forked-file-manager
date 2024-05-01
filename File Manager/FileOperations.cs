@@ -102,7 +102,7 @@ namespace File_Manager
         public void ArchiveFile(string source)
         {
             string sourceFile = source;
-            string destinationFile = Path.Combine(Path.GetDirectoryName(source), Path.GetFileName(source) + ".gz");
+            string destinationFile = Path.Combine(Path.GetDirectoryName(source), Path.GetFileNameWithoutExtension(source) + ".gz");
 
             if (File.Exists(source) && !Path.GetFileName(source).Equals("..."))
             {

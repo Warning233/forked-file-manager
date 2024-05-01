@@ -9,3 +9,5 @@ C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File Manager.csp
 C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File Manager.csproj.CoreCompileInputs.cache
 C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File Manager.exe
 C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File Manager.pdb
+C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File_Manager.AuthForm.resources
+C:\Users\rusmo\source\repos\File Manager\File Manager\obj\Debug\File_Manager.SettingsForm.resources

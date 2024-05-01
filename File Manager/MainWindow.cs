@@ -9,12 +9,9 @@ namespace File_Manager
 {
     public partial class MainWindow : Form
     {
-        /* TODO:
-         * 1. Добавить всякие фичи
-         * 2. Разобраться с сериализацпией
-        */
 
         private FileOperations fileOperations = new FileOperations();
+        private SettingsForm settingsForm = new SettingsForm();
         private string[] paths = new string[2];
         
         public ListBox leftLB { get; private set; }
@@ -274,6 +271,11 @@ namespace File_Manager
             paths[1] = rDriversBox.Text;
             fileOperations.NavigateToDirectory(paths[1], rightLB);
             rightTBox.Text = paths[1];
+        }
+
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            settingsForm.ShowDialog();
         }
     }
 }
