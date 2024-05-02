@@ -45,9 +45,7 @@ namespace File_Manager
             }
 
             else
-            {
                 MessageBox.Show("Введите логин/пароль");
-            }
         }
 
         private void AuthForm_FormClosing(object sender, FormClosingEventArgs e)

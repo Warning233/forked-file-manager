@@ -188,9 +188,7 @@ namespace File_Manager
                             }
                         }
                         else
-                        {
                             newPath = (currentFolder == paths[0]) ? Path.Combine(paths[0], selectedObject) : Path.Combine(paths[1], selectedObject);
-                        }
 
                         if (currentBox == leftLB)
                         {
@@ -214,11 +212,13 @@ namespace File_Manager
 
                     case Keys.F8:
                         string query = $"Вы действительно хотите удалить этот объект '{selectedObject}' ?";
+
                         if (MessageBox.Show(query, "Удалить?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
                             fileOperations.Delete(Path.Combine(currentFolder, selectedObject));
                             selectedObject = "";
                         }
+
                         TopMost = true;
                         break;
 
@@ -227,10 +227,10 @@ namespace File_Manager
                         string destinationMove = (currentFolder == paths[1] ? paths[0] : paths[1]) + "\\";
 
                         string queryMove = $"Переместить {Path.GetFileName(sourceMove)} в {destinationMove} ?";
+
                         if (MessageBox.Show(queryMove, "Переместить?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
                             fileOperations.Move(sourceMove, destinationMove);
-                        }
+
                         break;
 
                     case Keys.F6:
@@ -247,9 +247,8 @@ namespace File_Manager
                         string queryCopy = $"Копировать {Path.GetFileName(sourceCopy)} в {Path.GetDirectoryName(destinationCopy)} ?";
 
                         if (MessageBox.Show(queryCopy, "Копировать?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
                             fileOperations.Copy(sourceCopy, destinationCopy);
-                        }
+
                         break;
                 }
 

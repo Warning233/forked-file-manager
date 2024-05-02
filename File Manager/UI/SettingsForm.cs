@@ -92,10 +92,9 @@ namespace File_Manager
             {
                 control.Font = FormFont;
                 control.ForeColor = FontColor;
+
                 if (control.HasChildren)
-                {
                     ApplyFontToAllControls(control.Controls);
-                }
             }
         }
     }
