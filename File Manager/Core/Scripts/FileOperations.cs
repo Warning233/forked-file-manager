@@ -23,12 +23,11 @@ namespace File_Manager
                     File.Delete(source);
             }
         }
+
         public void CopyDirectory(string source, string destination, bool recursive) 
         { 
             if(Path.GetFileName(source).Equals("..."))
-            {
                 return;
-            }
 
             if (destination[0] == '\\')
             {
@@ -39,9 +38,7 @@ namespace File_Manager
             var dir = new DirectoryInfo(source);
 
             if (!dir.Exists)
-            {
                 throw new DirectoryNotFoundException($"Папка не была найдена: {dir.FullName}");
-            }
 
             DirectoryInfo[] dirs = dir.GetDirectories();
             Directory.CreateDirectory(destination);
@@ -61,6 +58,7 @@ namespace File_Manager
                 }
             }
         }
+
         public void CopyFile(string source, string destination)
         {
             if (!Path.GetFileName(destination).Equals("..."))
@@ -76,6 +74,7 @@ namespace File_Manager
                 }
             }
         }
+
         public void Copy(string source, string destination) // Distributor method
         {
             if (Directory.Exists(source))
@@ -84,21 +83,25 @@ namespace File_Manager
             else
                 CopyFile(source, destination);
         } 
+
         public void ViewFile(string source)
         {
             Process.Start(source);
         }
+
         public void Rename(string oldName, string newName)
         {
             try
             {
                 Microsoft.VisualBasic.FileSystem.Rename(oldName, newName);
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
+
         public void ArchiveFile(string source)
         {
             string sourceFile = source;
@@ -108,9 +111,7 @@ namespace File_Manager
             {
 
                 if (!File.Exists(destinationFile))
-                {
                     using (File.Create(destinationFile)) { }
-                }
 
                 const int BufferSize = 16384;
 
@@ -139,12 +140,11 @@ namespace File_Manager
             }
 
             else
-            {
                 MessageBox.Show("Выберите файл!");
-            }
 
 
         }
+
         public void Move(string source, string destination)
         {
             if (File.Exists(source))
@@ -174,12 +174,13 @@ namespace File_Manager
                     }
                 }
 
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Ошибка: {ex.Message}");
                 }
             }
         }
+
         public void NavigateToDirectory(string source, ListBox listBox)
         {
             try
@@ -198,22 +199,20 @@ namespace File_Manager
                     listBox.Items.Add(file.Name);
                 }
             }
+
             catch (Exception ex) 
             {
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
+
         public void RefreshList(MainWindow main, string leftPath, string rightPath)
         {
             if (main.leftLB.Items.Count != 0)
-            {
                 NavigateToDirectory(leftPath, main.leftLB);
-            }
 
             else if (main.rightLB.Items.Count != 0)
-            {
                 NavigateToDirectory(rightPath, main.rightLB);
-            }
         }
     }
 }

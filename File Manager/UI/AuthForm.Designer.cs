@@ -69,9 +69,10 @@
             // 
             // SigninButton
             // 
-            this.SigninButton.Location = new System.Drawing.Point(111, 193);
+            this.SigninButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SigninButton.Location = new System.Drawing.Point(80, 187);
             this.SigninButton.Name = "SigninButton";
-            this.SigninButton.Size = new System.Drawing.Size(139, 23);
+            this.SigninButton.Size = new System.Drawing.Size(201, 29);
             this.SigninButton.TabIndex = 7;
             this.SigninButton.Text = "Вход/Регистрация";
             this.SigninButton.UseVisualStyleBackColor = true;
@@ -88,7 +89,7 @@
             this.Controls.Add(this.login);
             this.Controls.Add(this.SigninButton);
             this.Name = "AuthForm";
-            this.Text = "AuthForm";
+            this.Text = "Вход";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AuthForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -18,6 +18,7 @@ namespace File_Manager
         public ListBox rightLB { get; private set; } 
 
         public MainWindow()
+
         {
             InitializeComponent();
 

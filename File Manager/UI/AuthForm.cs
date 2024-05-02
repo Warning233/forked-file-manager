@@ -21,6 +21,7 @@ namespace File_Manager
         {
             InitializeComponent();
         }
+
         private void SignInUp_Click(object sender, EventArgs e)
         {
             Username = login.Text;
