@@ -81,6 +81,7 @@ namespace File_Manager
             foreach (Form form in Application.OpenForms)
             {
                 form.Font = FormFont;
+                form.ForeColor = FontColor;
                 ApplyFontToAllControls(form.Controls);
             }
         }
@@ -90,6 +91,7 @@ namespace File_Manager
             foreach (Control control in controls)
             {
                 control.Font = FormFont;
+                control.ForeColor = FontColor;
                 if (control.HasChildren)
                 {
                     ApplyFontToAllControls(control.Controls);

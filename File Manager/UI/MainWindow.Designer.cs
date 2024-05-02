@@ -168,11 +168,12 @@
             // 
             // settingsButton
             // 
-            this.settingsButton.Location = new System.Drawing.Point(532, 23);
+            this.settingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingsButton.Location = new System.Drawing.Point(532, 21);
             this.settingsButton.Name = "settingsButton";
-            this.settingsButton.Size = new System.Drawing.Size(25, 25);
+            this.settingsButton.Size = new System.Drawing.Size(30, 30);
             this.settingsButton.TabIndex = 28;
-            this.settingsButton.Text = "⚙️";
+            this.settingsButton.Text = "⚙";
             this.settingsButton.UseVisualStyleBackColor = true;
             this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
@@ -195,7 +196,7 @@
             this.Controls.Add(this.copyButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "Файловый менеджер";
             this.lPanel.ResumeLayout(false);
             this.rPanel.ResumeLayout(false);
             this.ResumeLayout(false);

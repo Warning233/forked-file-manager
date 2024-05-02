@@ -36,9 +36,10 @@
             // 
             // LoadSettingsButton
             // 
-            this.LoadSettingsButton.Location = new System.Drawing.Point(12, 213);
+            this.LoadSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LoadSettingsButton.Location = new System.Drawing.Point(12, 201);
             this.LoadSettingsButton.Name = "LoadSettingsButton";
-            this.LoadSettingsButton.Size = new System.Drawing.Size(178, 23);
+            this.LoadSettingsButton.Size = new System.Drawing.Size(178, 35);
             this.LoadSettingsButton.TabIndex = 0;
             this.LoadSettingsButton.Text = "Загрузить настройки";
             this.LoadSettingsButton.UseVisualStyleBackColor = true;
@@ -46,9 +47,10 @@
             // 
             // SaveSettingsButton
             // 
-            this.SaveSettingsButton.Location = new System.Drawing.Point(272, 213);
+            this.SaveSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveSettingsButton.Location = new System.Drawing.Point(272, 201);
             this.SaveSettingsButton.Name = "SaveSettingsButton";
-            this.SaveSettingsButton.Size = new System.Drawing.Size(178, 23);
+            this.SaveSettingsButton.Size = new System.Drawing.Size(178, 35);
             this.SaveSettingsButton.TabIndex = 2;
             this.SaveSettingsButton.Text = "Сохранить настройки";
             this.SaveSettingsButton.UseVisualStyleBackColor = true;
@@ -56,9 +58,10 @@
             // 
             // FontButton
             // 
+            this.FontButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FontButton.Location = new System.Drawing.Point(12, 32);
             this.FontButton.Name = "FontButton";
-            this.FontButton.Size = new System.Drawing.Size(159, 23);
+            this.FontButton.Size = new System.Drawing.Size(159, 35);
             this.FontButton.TabIndex = 3;
             this.FontButton.Text = "Выбрать шрифт";
             this.FontButton.UseVisualStyleBackColor = true;
@@ -66,9 +69,10 @@
             // 
             // ColorButton
             // 
+            this.ColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ColorButton.Location = new System.Drawing.Point(291, 32);
             this.ColorButton.Name = "ColorButton";
-            this.ColorButton.Size = new System.Drawing.Size(159, 23);
+            this.ColorButton.Size = new System.Drawing.Size(159, 35);
             this.ColorButton.TabIndex = 4;
             this.ColorButton.Text = "Изменить цвет";
             this.ColorButton.UseVisualStyleBackColor = true;
