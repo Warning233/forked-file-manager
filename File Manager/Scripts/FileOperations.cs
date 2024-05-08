@@ -8,20 +8,25 @@ namespace File_Manager
 {
     internal class FileOperations 
     {
-
-        // TODO:
-        // 1. переписать CopyDirectory с использованием CopyFile
-        public void Delete(string source)    
+        public void Delete(string source)
         {
-
-            if (!source.Equals("..."))
+            try
             {
-                if (Directory.Exists(source))
-                    Directory.Delete(source, true);
+                if (!source.Equals("..."))
+                {
+                    if (Directory.Exists(source))
+                        Directory.Delete(source, true);
 
-                else
-                    File.Delete(source);
+                    else
+                        File.Delete(source);
+                }
             }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+
         }
 
         public void CopyDirectory(string source, string destination, bool recursive) 
@@ -46,7 +51,7 @@ namespace File_Manager
             foreach (FileInfo file in dir.GetFiles())
             {
                 string targetFilePath = Path.Combine(destination, file.Name);
-                file.CopyTo(targetFilePath);
+                CopyFile(file.FullName, targetFilePath);
             }
 
             if (recursive)
@@ -61,17 +66,22 @@ namespace File_Manager
 
         public void CopyFile(string source, string destination)
         {
-            if (!Path.GetFileName(destination).Equals("..."))
+            try
             {
-                try
-                {
-                    File.Copy(source, destination);
-                }
+                FileInfo inputFile = new FileInfo(source);
 
-                catch (Exception ex)
+                using (FileStream originalFileStream = inputFile.OpenRead())
                 {
-                    MessageBox.Show($"Ошибка: {ex.Message}");
+                    using (FileStream outputFileStream = File.Create(destination))
+                    {
+                        originalFileStream.CopyTo(outputFileStream);
+                    }
                 }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
 
@@ -152,7 +162,8 @@ namespace File_Manager
                 try
                 {
                     string newDestination = Path.Combine(destination, Path.GetFileName(source));
-                    File.Move(source, newDestination);
+                    Copy(source, newDestination);
+                    Delete(source);
                 }
 
                 catch (Exception ex) 
@@ -170,7 +181,9 @@ namespace File_Manager
                     if (Directory.Exists(destination))
                     {
                         string newDestination = Path.Combine(destination, Path.GetFileName(source));
-                        Directory.Move(source, newDestination);
+
+                        Copy(source, newDestination);
+                        Delete(source);
                     }
                 }
 
@@ -208,10 +221,10 @@ namespace File_Manager
 
         public void RefreshList(MainWindow main, string leftPath, string rightPath)
         {
-            if (main.leftLB.Items.Count != 0)
+            if (leftPath != null)
                 NavigateToDirectory(leftPath, main.leftLB);
 
-            else if (main.rightLB.Items.Count != 0)
+            if (rightPath != null)
                 NavigateToDirectory(rightPath, main.rightLB);
         }
     }

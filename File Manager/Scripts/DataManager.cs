@@ -95,6 +95,7 @@ namespace File_Manager
                 while (fStream.Position < fStream.Length)
                 {
                     Settings settings = binFormat.Deserialize(fStream) as Settings;
+
                     if (settings != null) 
                     {
                         loadedSettings.Add(settings);

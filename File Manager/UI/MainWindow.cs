@@ -219,12 +219,11 @@ namespace File_Manager
                             selectedObject = "";
                         }
 
-                        TopMost = true;
                         break;
 
                     case Keys.F7:
                         string sourceMove = Path.Combine(currentFolder, selectedObject);
-                        string destinationMove = (currentFolder == paths[1] ? paths[0] : paths[1]) + "\\";
+                        string destinationMove = (currentFolder == paths[1] ? paths[0] : paths[1]);
 
                         string queryMove = $"Переместить {Path.GetFileName(sourceMove)} в {destinationMove} ?";
 
